@@ -59,5 +59,6 @@ Similarly, we do this for other near duplicate predictors to find if there is an
 8. LandSlope
 9. Alley
 10. Heating
+11. LandContour
 
 ### **4. Description and units of each selected variable:**

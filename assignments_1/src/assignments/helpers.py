@@ -36,7 +36,13 @@ def preprocess_data()-> pd.DataFrame:
     Returns:
     pd.DataFrame: The preprocessed DataFrame.
     """
-    to_be_dropped = ["1stFlrSF", "2ndFlrSF", "LowQualFinSF", "BsmtFinSF1", "BsmtFinSF2", "BsmtUnfSF"]
+    to_be_dropped = ['Id','1stFlrSF', '2ndFlrSF', 'LowQualFinSF', 'BsmtFinSF1', 'BsmtFinSF2','BsmtUnfSF','GarageArea',
+    'GarageYrBlt', 'YearRemodAdd', 'LotFrontage', 'ExterQual', 'BsmtQual', 'KitchenQual', 'Utilities', 'Street',
+    'Condition2', 'RoofMatl', 'PoolArea', 'PoolQC', '3SsnPorch', 'LandSlope', 'Alley', 'Heating',"BsmtFullBath", 
+    "BsmtHalfBath", "HalfBath", "BedroomAbvGr", "KitchenAbvGr", "WoodDeckSF", "OpenPorchSF", "EnclosedPorch", 
+    "ScreenPorch", "MiscVal", "MoSold", "YrSold", "TotRmsAbvGrd","MSSubClass", "MSZoning", "LandContour",
+    "Foundation", "PavedDrive", "SaleType", "HouseStyle","LotShape"]    
+
     raw_dataset_path = "../data/raw_dataset/train.csv" 
     df = load_data(raw_dataset_path)
     return drop_unnecessary_columns(df, to_be_dropped)
