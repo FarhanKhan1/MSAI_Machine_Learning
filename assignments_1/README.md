@@ -108,42 +108,42 @@ While selecting features, a mix of numerical, ordinal, and nominal predictors wa
 
 ### **4. Description and units of each selected variable:**
 
-**LotArea:** It is the size of the plot the house sits on.[Continuous numerical value, square feet].
+- **LotArea:** It is the size of the plot the house sits on.[Continuous numerical value, square feet].
 
-**LotConfig:** Lot relative to street(s) (Inside, Corner, CulDSac, FR2, FR3). [Nominal categorical value].
+- **LotConfig:** Lot relative to street(s) (Inside, Corner, CulDSac, FR2, FR3). [Nominal categorical value].
 
-**Neighborhood:** Physical location within Ames city limits. [Nominal categorical value].
+- **Neighborhood:** Physical location within Ames city limits. [Nominal categorical value].
 
-**BldgType:** Type of dwelling (single-family, duplex, townhouse, etc.). [Nominal categorical value].
+- **BldgType:** Type of dwelling (single-family, duplex, townhouse, etc.). [Nominal categorical value].
 
-**OverallQual:** Overall material and finish of the house (v.poor to v.excellent). [Ordinal categorical value, scale 1–10].
+- **OverallQual:** Overall material and finish of the house (v.poor to v.excellent). [Ordinal categorical value, scale 1–10].
 
-**YearBuilt:** Construction year. [Ordinal Discrete numerical value, year].
+- **YearBuilt:** Construction year. [Ordinal Discrete numerical value, year].
 
-**MasVnrArea:** Masonry veneer area in house. [Continuous numerical value, square feet].
+- **MasVnrArea:** Masonry veneer area in house. [Continuous numerical value, square feet].
 
-**BsmtExposure:** Refers to walkout or garden level walls. [Ordinal categorical value].
+- **BsmtExposure:** Refers to walkout or garden level walls. [Ordinal categorical value].
 
-**BsmtFinType1:** Rating of the main finished basement area. [Ordinal categorical value].
+- **BsmtFinType1:** Rating of the main finished basement area. [Ordinal categorical value].
 
-**TotalBsmtSF:** Total basement area. [Continuous numerical value, square feet].
+- **TotalBsmtSF:** Total basement area. [Continuous numerical value, square feet].
 
-**HeatingQC:** Heating quality and condition. [Ordinal categorical value].
+- **HeatingQC:** Heating quality and condition. [Ordinal categorical value].
 
-**CentralAir:** Refers to the central air conditioning. [Binary categorical value, Y/N].
+- **CentralAir:** Refers to the central air conditioning. [Binary categorical value, Y/N].
 
-**GrLivArea:** Above-grade (ground) living area. [Continuous numerical value, square feet].
+- **GrLivArea:** Above-grade (ground) living area. [Continuous numerical value, square feet].
 
-**FullBath:** Number of full bathrooms above ground. [Discrete numerical value, count].
+- **FullBath:** Number of full bathrooms above ground. [Discrete numerical value, count].
 
-**Fireplaces:** Number of fireplaces. [Discrete numerical value, count].
+- **Fireplaces:** Number of fireplaces. [Discrete numerical value, count].
 
-**FireplaceQu:** quality of Fireplace. [Ordinal categorical value].
+- **FireplaceQu:** quality of Fireplace. [Ordinal categorical value].
 
-**GarageFinish:** Interior finish of the garage. [Ordinal categorical value].
+- **GarageFinish:** Interior finish of the garage. [Ordinal categorical value].
 
-**GarageCars:** Cars capacity of Garage. [Discrete numerical value, count].
+- **GarageCars:** Cars capacity of Garage. [Discrete numerical value, count].
 
-**SaleCondition:** Condition of the sale. [Nominal categorical value].
+- **SaleCondition:** Condition of the sale. [Nominal categorical value].
 
-**SalePrice (target):** Sale price of the house. [Continuous numerical, USD($)].
+- **SalePrice (target):** Sale price of the house. [Continuous numerical, USD($)].
