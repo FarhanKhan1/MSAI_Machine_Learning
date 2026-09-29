@@ -41,7 +41,9 @@ def preprocess_data()-> pd.DataFrame:
     'Condition2', 'RoofMatl', 'PoolArea', 'PoolQC', '3SsnPorch', 'LandSlope', 'Alley', 'Heating',"BsmtFullBath", 
     "BsmtHalfBath", "HalfBath", "BedroomAbvGr", "KitchenAbvGr", "WoodDeckSF", "OpenPorchSF", "EnclosedPorch", 
     "ScreenPorch", "MiscVal", "MoSold", "YrSold", "TotRmsAbvGrd","MSSubClass", "MSZoning", "LandContour",
-    "Foundation", "PavedDrive", "SaleType", "HouseStyle","LotShape"]    
+    "Foundation", "PavedDrive", "SaleType", "HouseStyle","LotShape", "Condition1", "RoofStyle", "Exterior1st", 
+    "Exterior2nd", "MasVnrType", "BsmtCond", "BsmtFinType2", "Electrical", "Functional", 
+    "GarageType", "GarageQual", "GarageCond", "Fence", "MiscFeature", "OverallCond","ExterCond"]    
 
     raw_dataset_path = "../data/raw_dataset/train.csv" 
     df = load_data(raw_dataset_path)
