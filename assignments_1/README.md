@@ -24,9 +24,40 @@ We are going to use strongly related variables (independent with dependent) and 
 #### **Features Pre-Selection:**
 The following points will initially select features at high level
 
-**i. Avoid Exact Linear Dependence:**
-GrLivArea = 1stFlrSF + 2ndFlrSF + LowQualFinSF This relationship exists among these variables. So, we only keep GrLivArea (Above grade (ground) living area square feet)
+##### **i. Avoid Exact Linear Dependence:**
+**GrLivArea = 1stFlrSF + 2ndFlrSF + LowQualFinSF**, This relationship exists among these variables. So, we only keep GrLivArea (Above grade (ground) living area square feet)
+**6 Columns Dropped under Exact Linear Dependecies:**
+1. 1stFlrSF 
+2. 2ndFlrSF
+3. LowQualFinSF 
+4. BsmtFinSF1
+5. BsmtFinSF2
+6. BsmtUnfSF
 
+##### **ii. Avoid Near-Duplicate/high correlation Predictors:**
+**GarageArea has correlation with GarageCars**,  Generally, it is considered that a larger GarageArea will accomodate more cars. It is better to drop GarageArea in favor of GarageCars as it has (0-4) discrete numbers, easy to handle. **(corr of GarageArea with GarageCars is 0.88)**
+Similarly, we do this for other near duplicate predictors to find if there is any correlation among the independent variables.
+**7 Columns Dropped under Near duplication/high correlation:**
+1. GarageArea
+2. GarageYrBlt
+3. YearRemodAdd
+4. LotFrontage
+5. ExterQual
+6. BsmtQual
+7. KitchenQual
 
+##### **iii. Avoid Near-Constant Predictors:**
+**For example, Utilities has near constant distribution, one category accounts for almost 99% of the records**, this characteristic of a column makes most of the columns, encoded with OHE, zero/sparse and model does not learn variation from such a feature. Linear Regression is all about finding the variation in the dependent with respect to the variation in independent variables. The most reasonable option is dropping them.
+
+1. Utilities
+2. Street
+3. Condition2
+4. RoofMatl
+5. PoolArea
+6. PoolQC
+7. 3SsnPorch
+8. LandSlope
+9. Alley
+10. Heating
 
 ### **4. Description and units of each selected variable:**
