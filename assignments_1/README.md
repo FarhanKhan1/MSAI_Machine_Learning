@@ -118,7 +118,7 @@ While selecting features, a mix of numerical, ordinal, and nominal predictors wa
 
 - **OverallQual:** Overall material and finish of the house (v.poor to v.excellent). [Ordinal categorical value, scale 1–10].
 
-- **YearBuilt:** Construction year. [Ordinal Discrete numerical value, year].
+- **YearBuilt:** Construction year. [Discrete numerical value, year].
 
 - **MasVnrArea:** Masonry veneer area in house. [Continuous numerical value, square feet].
 
@@ -147,3 +147,102 @@ While selecting features, a mix of numerical, ordinal, and nominal predictors wa
 - **SaleCondition:** Condition of the sale. [Nominal categorical value].
 
 - **SalePrice (target):** Sale price of the house. [Continuous numerical, USD($)].
+
+# Initial Examination:
+
+### **1. Data Types (Numerical/Categorical):**
+
+`preprocessed_data.info()`
+
+<class 'pandas.DataFrame'>
+RangeIndex: 1460 entries, 0 to 1459
+Data columns (total 20 columns):
+ #   Column         Non-Null Count  Dtype  
+---  ------         --------------  -----  
+ 0   LotArea        1460 non-null   int64  
+ 1   LotConfig      1460 non-null   str    
+ 2   Neighborhood   1460 non-null   str    
+ 3   BldgType       1460 non-null   str    
+ 4   OverallQual    1460 non-null   int64  
+ 5   YearBuilt      1460 non-null   int64  
+ 6   MasVnrArea     1452 non-null   float64
+ 7   BsmtExposure   1422 non-null   str    
+ 8   BsmtFinType1   1423 non-null   str    
+ 9   TotalBsmtSF    1460 non-null   int64  
+ 10  HeatingQC      1460 non-null   str    
+ 11  CentralAir     1460 non-null   str    
+ 12  GrLivArea      1460 non-null   int64  
+ 13  FullBath       1460 non-null   int64  
+ 14  Fireplaces     1460 non-null   int64  
+ 15  FireplaceQu    770 non-null    str    
+ 16  GarageFinish   1379 non-null   str    
+ 17  GarageCars     1460 non-null   int64  
+ 18  SaleCondition  1460 non-null   str    
+ 19  SalePrice      1460 non-null   int64  
+dtypes: float64(1), int64(9), str(10)
+memory usage: 228.3 KB
+
+### **2. Missing values (How many and which predictor variables) :**
+
+`preprocessed_data.isnull().sum()`
+
+LotArea            0
+LotConfig          0
+Neighborhood       0
+BldgType           0
+OverallQual        0
+YearBuilt          0
+MasVnrArea         8
+BsmtExposure      38
+BsmtFinType1      37
+TotalBsmtSF        0
+HeatingQC          0
+CentralAir         0
+GrLivArea          0
+FullBath           0
+Fireplaces         0
+FireplaceQu      690
+GarageFinish      81
+GarageCars         0
+SaleCondition      0
+SalePrice          0
+dtype: int64
+
+**MasVnrArea:** This feature has 8 missing values, confirmed via MasVnrType also NaN, not "None"
+**BsmtExposure:** This feature shows 38 missing values, but only 1 is a real missing value. Most of them are just equavilant to 'N/A' because the house has no basement.
+**BsmtFinType1:** This has no Missing values, 37 are just for No basement, confirmed against the 'TotalBsmtSF'.
+**FireplaceQu:** all of 690 means there is no Fireplace at all. This is confirmed with 'Fireplaces' columns, which shows zero against all NaN in the 'FireplaceQu'
+
+### **3. Duplicate records (How many) :**
+
+`preprocessed_data.duplicated().sum()`
+
+The result shows **np.int64(0)**, meaning it has no duplicate values.
+
+### **4. Potential outliers (How many):**
+Following are the outliers calculated with IQR method. The reason is the skewness of the numerical features. 
+
+**Skewness values in dataset:**
+LotArea        12.207688
+YearBuilt      -0.613461
+MasVnrArea      2.669084
+TotalBsmtSF     1.524255
+GrLivArea       1.366560
+FullBath        0.036562
+Fireplaces      0.649565
+GarageCars     -0.342549
+SalePrice       1.882876
+dtype: float64
+
+**Number of Outliers in the Numerical columns:**
+
+LotArea: 69 outliers
+YearBuilt: 7 outliers
+MasVnrArea: 96 outliers
+TotalBsmtSF: 61 outliers
+GrLivArea: 31 outliers
+FullBath: 0 outliers
+Fireplaces: 5 outliers
+GarageCars: 5 outliers
+SalePrice: 61 outliers
+
