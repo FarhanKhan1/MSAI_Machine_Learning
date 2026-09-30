@@ -154,6 +154,7 @@ While selecting features, a mix of numerical, ordinal, and nominal predictors wa
 
 `preprocessed_data.info()`
 
+```
 <class 'pandas.DataFrame'>
 RangeIndex: 1460 entries, 0 to 1459
 Data columns (total 20 columns):
@@ -181,11 +182,13 @@ Data columns (total 20 columns):
  19  SalePrice      1460 non-null   int64  
 dtypes: float64(1), int64(9), str(10)
 memory usage: 228.3 KB
+```
 
 ### **2. Missing values (How many and which predictor variables) :**
 
 `preprocessed_data.isnull().sum()`
 
+```
 LotArea            0
 LotConfig          0
 Neighborhood       0
@@ -207,6 +210,7 @@ GarageCars         0
 SaleCondition      0
 SalePrice          0
 dtype: int64
+```
 
 **MasVnrArea:** This feature has 8 missing values, confirmed via MasVnrType also NaN, not "None"
 **BsmtExposure:** This feature shows 38 missing values, but only 1 is a real missing value. Most of them are just equavilant to 'N/A' because the house has no basement.
@@ -217,12 +221,18 @@ dtype: int64
 
 `preprocessed_data.duplicated().sum()`
 
-The result shows **np.int64(0)**, meaning it has no duplicate values.
+```
+np.int64(0)
+```
+
+This shows it has no duplicate values.
 
 ### **4. Potential outliers (How many):**
-Following are the outliers calculated with IQR method. The reason is the skewness of the numerical features. 
+Following are the outliers calculated with IQR method. The reason is the skewness of the numerical features.
 
 **Skewness values in dataset:**
+
+```
 LotArea        12.207688
 YearBuilt      -0.613461
 MasVnrArea      2.669084
@@ -233,9 +243,11 @@ Fireplaces      0.649565
 GarageCars     -0.342549
 SalePrice       1.882876
 dtype: float64
+```
 
 **Number of Outliers in the Numerical columns:**
 
+```
 LotArea: 69 outliers
 YearBuilt: 7 outliers
 MasVnrArea: 96 outliers
@@ -245,4 +257,4 @@ FullBath: 0 outliers
 Fireplaces: 5 outliers
 GarageCars: 5 outliers
 SalePrice: 61 outliers
-
+```
