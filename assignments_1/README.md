@@ -258,3 +258,92 @@ Fireplaces: 5 outliers
 GarageCars: 5 outliers
 SalePrice: 61 outliers
 ```
+
+# Splitting dataset(train & test), Preprocessing pipeline [missing values, outliers and feature scaling]:
+
+### **1. Splitting Dataset into training and testing:**
+
+1. The dataset is split into Training(75%) and Test(25%), using a fixed random seed for reproducibility.
+2.  Since, the Dependent Variable is highly right-skewed (1.88, see Step 3: Potential outlier), To avoid meaningless distribution of data in train and test sets, the split is **stratified** on `SalePrice`, binned into 5 quantile-based strata (`pd.qcut`)
+3. To represent price range meaningfully, we take 5 bins to have enough strata. This way, each stratum gets (219(training) + 73(test) = 290). This generate reliable split given the skewed distribution.
+
+`price_bins = pd.qcut(preprocessed_data["SalePrice"], q=5, labels=False)`
+`train_data, test_data = train_test_split(
+    preprocessed_data,
+    test_size=0.25,
+    random_state=42,
+    stratify=price_bins
+)`
+
+`print(train_data.shape)`
+`print(test_data.shape)` 
+
+```
+(1089, 20)
+(364, 20)
+```
+
+### **2. Handling Missing Values:**
+
+Most `NaN` values in the dataset are not genuinely missing rather represents "feature absent" case (no basement, no fireplace, no garage) other than the following 2 features.
+
+- **`MasVnrArea`**: 8 genuinely missing values.
+
+- **`BsmtExposure`**: 1 genuinely missing value.
+
+**Approach:**
+
+1. **`MasVnrArea`**: we impute with **median**, rather than **mean**, because the column is right-skewed (skew = 2.67).
+
+2. **`BsmtExposure`'s single genuine missing row**: Before the train/test split, we drop the record,which is okay and does not effect the dataset, instead of imputing this single row with other related complexities like changing the representation of other NaN values(shows absent feature only).
+
+3. **"feature absent" columns** (`BsmtExposure`'s remaining 37 "no basement" rows, `BsmtFinType1`, `FireplaceQu`, `GarageFinish`): filled with constant `"None"` category, rather than a statistical imputation. This preserves the meaning "this feature does not exist" and also introduces another category. Later, we encode it as a lowest rank value in ordinal columns.
+
+We fit imputation statistics to training dataset only and apply identically to the testing, which helps in avoiding data leakage.
+
+### **3. Handling Outliers:**
+
+We use **IQR method** due to the skewness in the Continuous features (mentioned under the Potential outliers heading above). instead of mean based techniques like Z-Score.
+
+**Approach:**
+
+We review each flagged column individually (via scatter plot and distribution shape), that distinguishes genuine anomalies than legitimately rare but valid records. This helps in deciding to keep them rather than removing them.
+
+- **`GrLivArea`**: 2 rows in this dataset, where unusually large living areas (> 4000 sq ft) are paired with unusually low sale prices, have been removed due to negligable number of records.
+
+- **`LotArea`**: 4 additional rows with extreme lot sizes (> 100,000 sq ft), were far beyond the rest of the distribution can disproportionately influence our model.
+
+In total, **6 rows were removed** as genuine outliers, out of 1,460. This removal was done **before the train/test split**, since it is a fixed, rule-based decision, decreasing the risk of data leakage between train and test sets.
+
+### **4. Encoding Catregorical predictors:**
+
+### **4. Encoding Categorical predictors:**
+
+The categorical predictors fall into two types, each needs its own encoding techniques:
+
+**Ordinal columns (6)** — `OrdinalEncoder` is used with an **explicitly defined category order** per column (not the default alphabetical order),which ensures higher-order categories map to higher numeric values. `None` shows absent feature, which sounds lowest category naturally.
+
+- `BsmtExposure`: None < No < Mn < Av < Gd
+- `BsmtFinType1`: None < Unf < LwQ < Rec < BLQ < ALQ < GLQ
+- `HeatingQC`: Po < Fa < TA < Gd < Ex
+- `FireplaceQu`: None < Po < Fa < TA < Gd < Ex
+- `GarageFinish`: None < Unf < RFn < Fin
+- `OverallQual`: This is already stored as integers (1–10) in the raw data, so there is no need to transform it.
+
+**Nominal columns (5)** — no natural order, so `OneHotEncoder` is used. `Neighborhood` (25 categories, currently, we simply OHE them, If there is any issue with the model scores, we revisit and split it into ranges to reduce the dimension), `CentralAir` (binary), `LotConfig`, `BldgType`, `SaleCondition`.
+
+`drop="first"` is applied to  avoid exact linear dependence between the resulting dummy columns and the model's intercept term.
+
+This produces 38 columns from the 5 nominal predictors, so the total feature count becomes 52, previously 19.
+
+### **5. Scaling (Standardization):**
+
+Since this assignment implements Gradient Descent and Stochastic Gradient Descent (Q1, Step 6–7), feature scaling is a requirement, not just good practice: unscaled features with very different ranges and units (e.g. `LotArea` in square feet vs. `FullBath` as a 0–3 count) cause slow or unstable convergence for gradient-based optimization.
+
+**Approach:**
+
+For full consistency across the input features, we scale all of the 52 features including dummy OHE instead of just scaling originally continuous columns. This is because it helps Gradient Decent algorithm in convergence more conveniently than otherwise. We use `StandardScaler` (mean 0, standard deviation 1) which is beneficial for skewed data plus it also keep the outliers so our look alike outliers should stay same as we do not want to change these legitimate rare outliers.  
+
+To keep the Evaluation step easy and more comparing friendly, we do not scale the `SalePrice`. This is intentional approach, which is also common among the professionals.
+
+**Verification:** after transformation, we have mean of ≈0 (4.18e-17) and a std of ≈1 (1.0005), which confirms the scaling works fine.
