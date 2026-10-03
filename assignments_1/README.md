@@ -347,3 +347,48 @@ For full consistency across the input features, we scale all of the 52 features 
 To keep the Evaluation step easy and more comparing friendly, we do not scale the `SalePrice`. This is intentional approach, which is also common among the professionals.
 
 **Verification:** after transformation, we have mean of ≈0 (4.18e-17) and a std of ≈1 (1.0005), which confirms the scaling works fine.
+
+
+# Examine multicollinearity among the predictors using:
+
+### Context: Correlation's Role in Feature Selection
+
+During feature pre-selection (Rule ii: "Avoid Near-Duplicate/High Correlation Predictors"), the correlation among the predictors helps in resolving the issues of similar features. 
+
+- `GarageCars` vs. `GarageArea` (corr = 0.88) — `GarageArea` was dropped
+- `OverallQual` vs. [`ExterQual`, `BsmtQual`, `KitchenQual`] the corr ranges from [0.66 to 0.73], so we drop three, and only keep `OverallQual`
+- `YearBuilt` vs. `GarageYrBlt` (corr = 0.83) — `GarageYrBlt` was dropped
+- `TotRmsAbvGrd` vs. `GrLivArea` (corr = 0.83) — `TotRmsAbvGrd` was dropped
+
+In each case, when two predictors showed strong correlation (roughly ≥ 0.6–0.7) and carried largely overlapping information, only one was retained, to avoid the instability and misleading coefficients that multicollinearity causes in linear regression.
+To avoid the misleading coefficients and instability, that can be caused by multicollinearity in Linear Regression, we only retain one feature among high correlated features. The threshold is roughly 0.65+ 
+
+Among the remaining 19 predictors, **no pair crosses this threshold**, meaning the earlier selection process was effective. These details can be found in the `data_understanding.ipynb`.
+
+# If GD or SGD is selected:
+
+1. **Standardize predictors:** All 52 features have been standardized via `StandardScaler`.
+2. **Learning rate:** eta0 = 0.01, with learning_rate='invscaling' decays as (eta0 / iteration^0.25).
+3. **Stopping criterion:** When loss improves by less than **tol = 0.001** for **n_iter_no_change = 5** consective rows.
+4. **Iterations or epochs:** **n_iter_ = 25** (from the fitted model)
+
+# Evaluate each implementation on the training and test sets using:
+
+### SVD:
+
+1. Train R²: 0.8893185936134853
+2. Test R²: 0.8519552138826101
+3. Train MAE: 17987.927328373222
+4. Test MAE: 20082.50240091017
+5. Train RMSE: 25937.810519237744
+6. Test RMSE: 32037.122660524805
+
+### SGD:
+
+1. Train R²: 0.8889205237492102
+2. Test R²: 0.8507325439003631
+3. Train MAE: 17876.772237698242
+4. Test MAE: 19934.165617263185
+5. Train RMSE: 25984.41181429236
+6. Test RMSE: 32169.144481815976
+
